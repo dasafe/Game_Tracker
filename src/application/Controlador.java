@@ -33,6 +33,7 @@ public class Controlador implements Initializable {
 		// TODO Auto-generated method stub
 
 		fechaInicio.setCellValueFactory(new PropertyValueFactory<Juego, String>("fecha_inicio"));
+		fechaInicio.setCellFactory(TextFieldTableCell.forTableColumn());
 		
 		fechaFin.setCellValueFactory(new PropertyValueFactory<Juego, String>("fecha_fin"));
 		fechaFin.setCellFactory(TextFieldTableCell.forTableColumn());
