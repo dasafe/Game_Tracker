@@ -1,13 +1,15 @@
 package application;
 
+import java.time.LocalDate;
+
 public class Juego {
 
-	private String fecha_inicio;
-	private String fecha_fin;
+	private LocalDate fecha_inicio;
+	private LocalDate fecha_fin;
 	private String nombre;
 	private int nota;
 
-	public Juego(String fecha_inicio, String fecha_fin, String nombre, int nota) {
+	public Juego(LocalDate fecha_inicio, LocalDate fecha_fin, String nombre, int nota) {
 		super();
 		this.fecha_inicio = fecha_inicio;
 		this.fecha_fin = fecha_fin;
@@ -19,19 +21,19 @@ public class Juego {
 		super();
 	}
 
-	public String getFecha_inicio() {
+	public LocalDate getFecha_inicio() {
 		return fecha_inicio;
 	}
 
-	public void setFecha_inicio(String fecha_inicio) {
+	public void setFecha_inicio(LocalDate fecha_inicio) {
 		this.fecha_inicio = fecha_inicio;
 	}
 
-	public String getFecha_fin() {
+	public LocalDate getFecha_fin() {
 		return fecha_fin;
 	}
 
-	public void setFecha_fin(String fecha_fin) {
+	public void setFecha_fin(LocalDate fecha_fin) {
 		this.fecha_fin = fecha_fin;
 	}
 

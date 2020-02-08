@@ -1,28 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.text.*?>
-<?import javafx.scene.control.*?>
-<?import java.lang.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
 
-
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controlador">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.181" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ControladorTabla">
    <children>
-      <TableView fx:id="tabla" editable="true" layoutX="15.0" layoutY="65.0" prefHeight="554.0" prefWidth="1250.0">
+      <TableView fx:id="tabla" editable="true" layoutX="15.0" layoutY="34.0" prefHeight="585.0" prefWidth="1250.0">
         <columns>
           <TableColumn fx:id="fechaInicio" prefWidth="128.0" text="FECHA_INICIO" />
           <TableColumn fx:id="fechaFin" prefWidth="97.0" text="FECHA_FIN" />
-            <TableColumn fx:id="nombre" minWidth="0.0" prefWidth="82.0" text="NOMBRE" />
-            <TableColumn fx:id="nota" minWidth="0.0" prefWidth="109.0" text="NOTA" />
+            <TableColumn fx:id="nombre" minWidth="0.0" onEditCommit="#editarNombre" prefWidth="82.0" text="NOMBRE" />
+            <TableColumn fx:id="nota" minWidth="0.0" onEditCommit="#editarNota" prefWidth="109.0" text="NOTA" />
         </columns>
+         <contextMenu>
+            <ContextMenu>
+              <items>
+                <MenuItem fx:id="delete" mnemonicParsing="false" onAction="#borrarJuego" text="Borrar seleccion" />
+              </items>
+            </ContextMenu>
+         </contextMenu>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
       <MenuBar prefHeight="25.0" prefWidth="1280.0">
         <menus>
-            <Menu mnemonicParsing="false" text="Buscar" />
-            <Menu mnemonicParsing="false" text="Atras" />
+            <Menu mnemonicParsing="false" text="Menu">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="Buscar" />
+                  <MenuItem fx:id="back" mnemonicParsing="false" onAction="#start" text="Cambiar usuario" />
+               </items>
+            </Menu>
         </menus>
       </MenuBar>
       <DatePicker fx:id="fi" layoutX="15.0" layoutY="630.0" prefHeight="25.0" prefWidth="320.0" />
@@ -30,6 +47,5 @@
       <TextField fx:id="name" layoutX="655.0" layoutY="630.0" prefHeight="25.0" prefWidth="300.0" />
       <ChoiceBox fx:id="note" layoutX="955.0" layoutY="630.0" prefHeight="25.0" prefWidth="310.0" />
       <Button fx:id="add" layoutX="1120.0" layoutY="664.0" mnemonicParsing="false" onAction="#guardarJuego" prefHeight="45.0" prefWidth="145.0" text="Añadir" />
-      <Button fx:id="delete" layoutX="15.0" layoutY="33.0" mnemonicParsing="false" onAction="#borrarJuego" prefHeight="25.0" prefWidth="99.0" text="Borrar" />
    </children>
 </Pane>
