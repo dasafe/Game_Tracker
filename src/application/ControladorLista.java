@@ -4,6 +4,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
@@ -13,14 +14,21 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
+import javafx.event.EventHandler;
 
 public class ControladorLista implements Initializable {
 
 	private ObservableList<Usuario> list = FXCollections.observableArrayList();
+
+	private Stage primaryStage;
 
 	@FXML
 	private ListView<Usuario> listaUsuarios;
@@ -72,7 +80,7 @@ public class ControladorLista implements Initializable {
 	}
 
 	public void start() {
-		Stage primaryStage = new Stage();
+		primaryStage = new Stage();
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("tabla.fxml"));
 			Parent root = (Parent) loader.load();
@@ -80,6 +88,8 @@ public class ControladorLista implements Initializable {
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.setTitle(listaUsuarios.getSelectionModel().getSelectedItem().getUser());
+
+			primaryStage.setOnCloseRequest(confirmCloseEventHandler);
 
 			ControladorTabla ct = loader.getController();
 			ct.cargarUsuario(listaUsuarios.getSelectionModel().getSelectedItem().getJuegos());
@@ -91,4 +101,18 @@ public class ControladorLista implements Initializable {
 			e.printStackTrace();
 		}
 	}
+
+	private EventHandler<WindowEvent> confirmCloseEventHandler = event -> {
+		Alert closeConfirmation = new Alert(Alert.AlertType.CONFIRMATION, "Estas seguro de que quieres salir?");
+		Button exitButton = (Button) closeConfirmation.getDialogPane().lookupButton(ButtonType.OK);
+		exitButton.setText("Salir");
+		closeConfirmation.setHeaderText("Confirmar");
+		closeConfirmation.initModality(Modality.APPLICATION_MODAL);
+		closeConfirmation.initOwner(primaryStage);
+
+		Optional<ButtonType> closeResponse = closeConfirmation.showAndWait();
+		if (!ButtonType.OK.equals(closeResponse.get())) {
+			event.consume();
+		}
+	};
 }
