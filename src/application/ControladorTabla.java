@@ -129,12 +129,22 @@ public class ControladorTabla implements Initializable {
 
 	public void borrarJuego() {
 		tabla.getItems().removeAll(tabla.getSelectionModel().getSelectedItems());
+		renovarArray();
 	}
 
 	public void guardarJuego() {
+		renovarArray();
 		listaJuegos.add(
 				new Juego(fi.getValue(), ff.getValue(), name.getText(), note.getSelectionModel().getSelectedItem()));
 		añadirJuegos(listaJuegos);
+	}
+
+	private void renovarArray() {
+		// TODO Auto-generated method stub
+		listaJuegos.clear();
+		for (int i = 0; i < list.size(); i++) {
+			listaJuegos.add(list.get(i));
+		}
 	}
 
 	public void start() {
@@ -167,7 +177,7 @@ public class ControladorTabla implements Initializable {
 			}
 		}
 	}
-	
+
 	@FXML
 	public void editarNota(TableColumn.CellEditEvent<Juego, Integer> evento) {
 		Juego aux = tabla.getSelectionModel().getSelectedItem();
@@ -177,5 +187,5 @@ public class ControladorTabla implements Initializable {
 			}
 		}
 	}
-	
+
 }
