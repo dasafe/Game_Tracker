@@ -34,6 +34,8 @@ public class ControladorTabla implements Initializable {
 
 	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy");
 
+	public String usuario;
+
 	@FXML
 	private TableView<Juego> tabla;
 
@@ -99,24 +101,7 @@ public class ControladorTabla implements Initializable {
 
 		note.getItems().addAll(10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0);
 
-//		cargarDatosPrueba();
-
 		tabla.setItems(list);
-	}
-
-	public void cargarDatosPrueba() {
-
-		listaJuegos.add(new Juego(LocalDate.parse("07/02/21", formatter), LocalDate.parse("07/02/21", formatter),
-				"Kingdom Hearts", 10));
-		listaJuegos.add(new Juego(LocalDate.parse("08/02/19", formatter), LocalDate.parse("07/02/22", formatter),
-				"Loco Roco", 8));
-		listaJuegos.add(new Juego(LocalDate.parse("21/02/20", formatter), LocalDate.parse("07/02/21", formatter),
-				"Patapon", 8));
-		listaJuegos.add(new Juego(LocalDate.parse("02/02/20", formatter), LocalDate.parse("07/02/20", formatter),
-				"Crash Bandicoot", 5));
-
-		añadirJuegos(listaJuegos);
-
 	}
 
 	public void añadirJuegos(ArrayList<Juego> lista) {
@@ -150,7 +135,9 @@ public class ControladorTabla implements Initializable {
 	public void start() {
 		Stage primaryStage = new Stage();
 		try {
-			Parent root = FXMLLoader.load(getClass().getResource("lista.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("lista.fxml"));
+			Parent root = (Parent) loader.load();
+			guardarUsuario(loader);
 			Scene scene = new Scene(root, 245, 440);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setScene(scene);
@@ -159,6 +146,17 @@ public class ControladorTabla implements Initializable {
 			primaryStage.show();
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+
+	private void guardarUsuario(FXMLLoader loader) {
+		// TODO Auto-generated method stub
+		ControladorLista cl = loader.getController();
+		for (int i = 0; i < cl.usuarios.size(); i++) {
+			if (cl.usuarios.get(i).getUser().equalsIgnoreCase(usuario)) {
+				cl.usuarios.get(i).setJuegos(listaJuegos);
+				System.out.println(usuario);
+			}
 		}
 	}
 

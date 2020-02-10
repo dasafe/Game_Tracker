@@ -1,8 +1,6 @@
 package application;
 
 import java.net.URL;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -51,32 +49,15 @@ public class ControladorLista implements Initializable {
 				}
 			}
 		});
-		cargarDatosPrueba();
+		añadirUsuario(usuarios);
 		listaUsuarios.setItems(list);
 	}
 
-	public void cargarDatosPrueba() {
-
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy");
-		ArrayList<Juego> listaJuegos = new ArrayList<Juego>();
-		listaJuegos.add(new Juego(LocalDate.parse("07/02/21", formatter), LocalDate.parse("07/02/21", formatter),
-				"Kingdom Hearts", 10));
-		listaJuegos.add(new Juego(LocalDate.parse("08/02/19", formatter), LocalDate.parse("07/02/22", formatter),
-				"Loco Roco", 8));
-		listaJuegos.add(new Juego(LocalDate.parse("21/02/20", formatter), LocalDate.parse("07/02/21", formatter),
-				"Patapon", 8));
-		listaJuegos.add(new Juego(LocalDate.parse("02/02/20", formatter), LocalDate.parse("07/02/20", formatter),
-				"Crash Bandicoot", 5));
-
-		Usuario user = new Usuario("David", listaJuegos);
-		Usuario user2 = new Usuario("Victor", listaJuegos);
-		añadirUsuario(user);
-		añadirUsuario(user2);
-	}
-
-	public void añadirUsuario(Usuario user) {
+	public void añadirUsuario(ArrayList<Usuario> users) {
 		// TODO Auto-generated method stub
-		list.add(user);
+		for (Usuario usuario : users) {
+			list.add(usuario);
+		}
 	}
 
 	public void start() {
@@ -93,6 +74,7 @@ public class ControladorLista implements Initializable {
 
 			ControladorTabla ct = loader.getController();
 			ct.cargarUsuario(listaUsuarios.getSelectionModel().getSelectedItem().getJuegos());
+			ct.usuario = listaUsuarios.getSelectionModel().getSelectedItem().getUser();
 
 			Stage stage = (Stage) aceptar.getScene().getWindow();
 			stage.close();
