@@ -35,7 +35,7 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <MenuBar prefHeight="25.0" prefWidth="1280.0">
+      <MenuBar prefHeight="0.0" prefWidth="1280.0">
         <menus>
             <Menu mnemonicParsing="false" text="Menu">
                <items>

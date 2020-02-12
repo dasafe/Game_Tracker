@@ -49,13 +49,13 @@ public class ControladorLista implements Initializable {
 				}
 			}
 		});
-		añadirUsuario(usuarios);
+		añadirUsuario();
 		listaUsuarios.setItems(list);
 	}
 
-	public void añadirUsuario(ArrayList<Usuario> users) {
+	public void añadirUsuario() {
 		// TODO Auto-generated method stub
-		for (Usuario usuario : users) {
+		for (Usuario usuario : Main.usuarios) {
 			list.add(usuario);
 		}
 	}

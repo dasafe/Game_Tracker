@@ -133,11 +133,11 @@ public class ControladorTabla implements Initializable {
 	}
 
 	public void start() {
+		guardarUsuario();
 		Stage primaryStage = new Stage();
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("lista.fxml"));
 			Parent root = (Parent) loader.load();
-			guardarUsuario(loader);
 			Scene scene = new Scene(root, 245, 440);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setScene(scene);
@@ -149,13 +149,11 @@ public class ControladorTabla implements Initializable {
 		}
 	}
 
-	private void guardarUsuario(FXMLLoader loader) {
+	private void guardarUsuario() {
 		// TODO Auto-generated method stub
-		ControladorLista cl = loader.getController();
-		for (int i = 0; i < cl.usuarios.size(); i++) {
-			if (cl.usuarios.get(i).getUser().equalsIgnoreCase(usuario)) {
-				cl.usuarios.get(i).setJuegos(listaJuegos);
-				System.out.println(usuario);
+		for (int i = 0; i < Main.usuarios.size(); i++) {
+			if (Main.usuarios.get(i).getUser().equalsIgnoreCase(usuario)) {
+				Main.usuarios.get(i).setJuegos(listaJuegos);
 			}
 		}
 	}

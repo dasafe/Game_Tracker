@@ -18,6 +18,7 @@ public class Main extends Application {
 	
 	@Override
 	public void start(Stage primaryStage) {
+		cargarDatosPrueba();
 		try {
 			Parent root = FXMLLoader.load(getClass().getResource("lista.fxml"));
 			Scene scene = new Scene(root, 245, 440);
@@ -46,7 +47,18 @@ public class Main extends Application {
 				"Crash Bandicoot", 5));
 
 		Usuario user = new Usuario("David", listaJuegos);
-		Usuario user2 = new Usuario("Victor", listaJuegos);
+		
+		ArrayList<Juego> listaJuegos2 = new ArrayList<Juego>();
+		listaJuegos2.add(new Juego(LocalDate.parse("07/02/21", formatter), LocalDate.parse("07/02/21", formatter),
+				"Half Life 2", 10));
+		listaJuegos2.add(new Juego(LocalDate.parse("08/02/19", formatter), LocalDate.parse("07/02/22", formatter),
+				"Bloodborne", 9));
+		listaJuegos2.add(new Juego(LocalDate.parse("21/02/20", formatter), LocalDate.parse("07/02/21", formatter),
+				"Spider-Man", 8));
+		listaJuegos2.add(new Juego(LocalDate.parse("02/02/20", formatter), LocalDate.parse("07/02/20", formatter),
+				"Hollow Knight", 9));
+		
+		Usuario user2 = new Usuario("Victor", listaJuegos2);
 		usuarios.add(user);
 		usuarios.add(user2);
 	}
