@@ -104,7 +104,7 @@ public class ControladorTabla implements Initializable {
 		tabla.setItems(list);
 	}
 
-	public void añadirJuegos(ArrayList<Juego> lista) {
+	public void addJuegos(ArrayList<Juego> lista) {
 		// TODO Auto-generated method stub
 		list.clear();
 		for (Juego juego : lista) {
@@ -121,7 +121,7 @@ public class ControladorTabla implements Initializable {
 		renovarArray();
 		listaJuegos.add(
 				new Juego(fi.getValue(), ff.getValue(), name.getText(), note.getSelectionModel().getSelectedItem()));
-		añadirJuegos(listaJuegos);
+		addJuegos(listaJuegos);
 	}
 
 	private void renovarArray() {
@@ -138,7 +138,7 @@ public class ControladorTabla implements Initializable {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("lista.fxml"));
 			Parent root = (Parent) loader.load();
-			Scene scene = new Scene(root, 245, 440);
+			Scene scene = new Scene(root, 245, 486);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setScene(scene);
 			Stage stage = (Stage) tabla.getScene().getWindow();
@@ -161,7 +161,7 @@ public class ControladorTabla implements Initializable {
 	public void cargarUsuario(ArrayList<Juego> lista) {
 		listaJuegos.clear();
 		listaJuegos = lista;
-		añadirJuegos(lista);
+		addJuegos(lista);
 	}
 
 	@FXML

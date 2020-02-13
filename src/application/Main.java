@@ -12,8 +12,6 @@ import javafx.scene.Scene;
 
 public class Main extends Application {
 	
-	//MODIFICAR PARA LEER ARRAY
-	
 	public static ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
 	
 	@Override
@@ -21,7 +19,7 @@ public class Main extends Application {
 		cargarDatosPrueba();
 		try {
 			Parent root = FXMLLoader.load(getClass().getResource("lista.fxml"));
-			Scene scene = new Scene(root, 245, 440);
+			Scene scene = new Scene(root, 245, 486);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.show();

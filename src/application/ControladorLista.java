@@ -17,6 +17,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -33,6 +34,9 @@ public class ControladorLista implements Initializable {
 
 	@FXML
 	private Button aceptar;
+	
+	@FXML
+	private TextField nuevo;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -49,15 +53,8 @@ public class ControladorLista implements Initializable {
 				}
 			}
 		});
-		añadirUsuario();
+		addUsuarios();
 		listaUsuarios.setItems(list);
-	}
-
-	public void añadirUsuario() {
-		// TODO Auto-generated method stub
-		for (Usuario usuario : Main.usuarios) {
-			list.add(usuario);
-		}
 	}
 
 	public void start() {
@@ -97,4 +94,32 @@ public class ControladorLista implements Initializable {
 			event.consume();
 		}
 	};
+	
+	public void guardarUsuario() {
+		renovarArray();
+		Main.usuarios.add(
+				new Usuario(nuevo.getText(), new ArrayList<Juego>()));
+		addUsuarios();
+	}
+
+	public void addUsuarios() {
+		// TODO Auto-generated method stub
+		list.clear();
+		for (Usuario u : Main.usuarios) {
+			list.add(u);
+		}
+	}
+
+	public void borrarUsuario() {
+		listaUsuarios.getItems().remove(listaUsuarios.getSelectionModel().getSelectedItem());
+		renovarArray();
+	}
+
+	private void renovarArray() {
+		// TODO Auto-generated method stub
+		Main.usuarios.clear();
+		for (int i = 0; i < list.size(); i++) {
+			Main.usuarios.add(list.get(i));
+		}
+	}
 }
