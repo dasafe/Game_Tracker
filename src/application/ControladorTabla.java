@@ -1,6 +1,9 @@
 package application;
 
+import java.awt.Desktop;
 import java.awt.MenuItem;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -184,4 +187,11 @@ public class ControladorTabla implements Initializable {
 		}
 	}
 
+	public void mostrarDocumento() throws IOException {
+		Desktop desktop = Desktop.getDesktop();
+		File file = new File("bin\\application\\Informe.pdf");
+		if (file.exists()) {
+			desktop.open(file);
+		}
+	}
 }

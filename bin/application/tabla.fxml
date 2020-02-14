@@ -39,7 +39,7 @@
         <menus>
             <Menu mnemonicParsing="false" text="Menu">
                <items>
-                  <MenuItem mnemonicParsing="false" text="Buscar" />
+                  <MenuItem mnemonicParsing="false" onAction="#mostrarDocumento" text="Ver PDF" />
                   <MenuItem fx:id="back" mnemonicParsing="false" onAction="#start" text="Cambiar usuario" />
                </items>
             </Menu>
