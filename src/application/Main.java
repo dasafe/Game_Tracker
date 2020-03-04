@@ -40,7 +40,7 @@ public class Main extends Application {
 		listaJuegos.add(new Juego(LocalDate.parse("08/02/19", formatter), LocalDate.parse("07/02/22", formatter),
 				"Loco Roco", 8));
 		listaJuegos.add(new Juego(LocalDate.parse("21/02/20", formatter), LocalDate.parse("07/02/21", formatter),
-				"Patapon", 8));
+				"B6C926577DE2BBAFC6BA06B8EEE44CC3", 8));
 		listaJuegos.add(new Juego(LocalDate.parse("02/02/20", formatter), LocalDate.parse("07/02/20", formatter),
 				"Crash Bandicoot", 5));
 
