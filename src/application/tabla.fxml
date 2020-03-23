@@ -23,6 +23,8 @@
           <TableColumn fx:id="fechaFin" prefWidth="97.0" text="FECHA_FIN" />
             <TableColumn fx:id="nombre" minWidth="0.0" onEditCommit="#editarNombre" prefWidth="82.0" text="NOMBRE" />
             <TableColumn fx:id="nota" minWidth="0.0" onEditCommit="#editarNota" prefWidth="109.0" text="NOTA" />
+            <TableColumn fx:id="estado" prefWidth="128.0" text="ESTADO" />
+            <TableColumn fx:id="comentario" prefWidth="128.0" text="COMENTARIO" />
         </columns>
          <contextMenu>
             <ContextMenu>
@@ -45,10 +47,12 @@
             </Menu>
         </menus>
       </MenuBar>
-      <DatePicker fx:id="fi" layoutX="15.0" layoutY="630.0" prefHeight="25.0" prefWidth="320.0" />
-      <DatePicker fx:id="ff" layoutX="335.0" layoutY="630.0" prefHeight="25.0" prefWidth="320.0" />
-      <TextField fx:id="name" layoutX="655.0" layoutY="630.0" prefHeight="25.0" prefWidth="300.0" />
-      <ChoiceBox fx:id="note" layoutX="955.0" layoutY="630.0" prefHeight="25.0" prefWidth="310.0" />
+      <DatePicker fx:id="fi" layoutX="15.0" layoutY="630.0" prefHeight="25.0" prefWidth="210.0" />
+      <DatePicker fx:id="ff" layoutX="225.0" layoutY="630.0" prefHeight="25.0" prefWidth="210.0" />
+      <TextField fx:id="name" layoutX="435.0" layoutY="630.0" prefHeight="25.0" prefWidth="210.0" />
+      <ChoiceBox fx:id="note" layoutX="640.0" layoutY="630.0" prefHeight="25.0" prefWidth="210.0" />
       <Button fx:id="add" layoutX="1120.0" layoutY="664.0" mnemonicParsing="false" onAction="#guardarJuego" prefHeight="45.0" prefWidth="145.0" text="AÑADIR" />
+      <TextField fx:id="newComentario" layoutX="1060.0" layoutY="630.0" prefHeight="25.0" prefWidth="210.0" />
+      <ChoiceBox fx:id="newEstado" layoutX="850.0" layoutY="630.0" prefHeight="25.0" prefWidth="210.0" />
    </children>
 </Pane>

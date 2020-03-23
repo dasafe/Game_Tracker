@@ -2,13 +2,23 @@ package application;
 
 import java.awt.Desktop;
 import java.awt.MenuItem;
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.ProtocolException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.ResourceBundle;
+
+import org.apache.commons.io.IOUtils;
+
+import com.google.gson.Gson;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -43,10 +53,10 @@ public class ControladorTabla implements Initializable {
 	private TableView<Juego> tabla;
 
 	@FXML
-	private TableColumn<Juego, LocalDate> fechaInicio, fechaFin;
+	private TableColumn<Juego, String> fechaInicio, fechaFin;
 
 	@FXML
-	private TableColumn<Juego, String> nombre;
+	private TableColumn<Juego, String> nombre, estado, comentario;
 
 	@FXML
 	private TableColumn<Juego, Integer> nota;
@@ -58,53 +68,45 @@ public class ControladorTabla implements Initializable {
 	private DatePicker ff;
 
 	@FXML
-	private TextField name;
+	private TextField name, newComentario;
 
 	@FXML
 	private ChoiceBox<Integer> note;
+	
+	@FXML
+	private ChoiceBox<String> newEstado;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
 
-		fechaInicio.setCellValueFactory(new PropertyValueFactory<Juego, LocalDate>("fecha_inicio"));
-		fechaInicio.setCellFactory(tc -> new TableCell<Juego, LocalDate>() {
-			@Override
-			protected void updateItem(LocalDate date, boolean empty) {
-				super.updateItem(date, empty);
-				if (empty) {
-					setText(null);
-				} else {
-					setText(formatter.format(date));
-				}
-			}
-		});
+		fechaInicio.setCellValueFactory(new PropertyValueFactory<Juego, String>("StartDate"));
 
-		fechaFin.setCellValueFactory(new PropertyValueFactory<Juego, LocalDate>("fecha_fin"));
-		fechaFin.setCellFactory(tc -> new TableCell<Juego, LocalDate>() {
-			@Override
-			protected void updateItem(LocalDate date, boolean empty) {
-				super.updateItem(date, empty);
-				if (empty) {
-					setText(null);
-				} else {
-					setText(formatter.format(date));
-				}
-			}
-		});
-		;
+		fechaFin.setCellValueFactory(new PropertyValueFactory<Juego, String>("FinalDate"));
 
-		nombre.setCellValueFactory(new PropertyValueFactory<Juego, String>("nombre"));
+		nombre.setCellValueFactory(new PropertyValueFactory<Juego, String>("Name"));
 		nombre.setCellFactory(TextFieldTableCell.forTableColumn());
 
-		nota.setCellValueFactory(new PropertyValueFactory<Juego, Integer>("nota"));
+		nota.setCellValueFactory(new PropertyValueFactory<Juego, Integer>("Score"));
 		nota.setCellFactory(ChoiceBoxTableCell.forTableColumn(10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0));
+		
+		estado.setCellValueFactory(new PropertyValueFactory<Juego, String>("GameStatus"));
+		estado.setCellFactory(ChoiceBoxTableCell.forTableColumn("Terminado", "En curso", "Pendiente"));
+		
+		comentario.setCellValueFactory(new PropertyValueFactory<Juego, String>("Comentario"));
+		comentario.setCellFactory(TextFieldTableCell.forTableColumn());
 
 		tabla.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
 		note.getItems().addAll(10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0);
+		newEstado.getItems().addAll("Terminado", "En curso", "Pendiente");
 
 		tabla.setItems(list);
+		try {
+			cargarJuegos();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void addJuegos(ArrayList<Juego> lista) {
@@ -120,11 +122,12 @@ public class ControladorTabla implements Initializable {
 		renovarArray();
 	}
 
-	public void guardarJuego() {
+	public void guardarJuego() throws IOException {
 		renovarArray();
 		listaJuegos.add(
-				new Juego(fi.getValue(), ff.getValue(), name.getText(), note.getSelectionModel().getSelectedItem()));
+				new Juego(formatter.format(fi.getValue()).toString(), formatter.format(ff.getValue()).toString(), name.getText(), note.getSelectionModel().getSelectedItem(), newEstado.getSelectionModel().getSelectedItem(), newComentario.getText()));
 		addJuegos(listaJuegos);
+		subirJuegoABBDD();
 	}
 
 	private void renovarArray() {
@@ -139,9 +142,9 @@ public class ControladorTabla implements Initializable {
 		guardarUsuario();
 		Stage primaryStage = new Stage();
 		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("lista.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("login.fxml"));
 			Parent root = (Parent) loader.load();
-			Scene scene = new Scene(root, 245, 486);
+			Scene scene = new Scene(root);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setScene(scene);
 			Stage stage = (Stage) tabla.getScene().getWindow();
@@ -171,8 +174,8 @@ public class ControladorTabla implements Initializable {
 	public void editarNombre(TableColumn.CellEditEvent<Juego, String> evento) {
 		Juego aux = tabla.getSelectionModel().getSelectedItem();
 		for (Juego juego : list) {
-			if (juego.getNombre().equalsIgnoreCase(aux.getNombre())) {
-				juego.setNombre(evento.getNewValue());
+			if (juego.getName().equalsIgnoreCase(aux.getName())) {
+				juego.setName(evento.getNewValue());
 			}
 		}
 	}
@@ -181,8 +184,8 @@ public class ControladorTabla implements Initializable {
 	public void editarNota(TableColumn.CellEditEvent<Juego, Integer> evento) {
 		Juego aux = tabla.getSelectionModel().getSelectedItem();
 		for (Juego juego : list) {
-			if (juego.getNombre().equalsIgnoreCase(aux.getNombre())) {
-				juego.setNota(evento.getNewValue());
+			if (juego.getName().equalsIgnoreCase(aux.getName())) {
+				juego.setScore(evento.getNewValue());
 			}
 		}
 	}
@@ -193,5 +196,52 @@ public class ControladorTabla implements Initializable {
 		if (file.exists()) {
 			desktop.open(file);
 		}
+	}
+	
+	public void cargarJuegos() throws IOException {
+		String query_url = "https://game-tracker-api.herokuapp.com/users/myProfile";
+		String json = "{\"name\" : \"" + ControladorLogin.usuarioActivo + "\" }";
+		
+		URL url = new URL(query_url);
+		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		conn.setConnectTimeout(5000);
+		conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+		conn.setDoOutput(true);
+		conn.setDoInput(true);
+		conn.setRequestMethod("POST");
+		
+		OutputStream os = conn.getOutputStream();
+		os.write(json.getBytes("UTF-8"));
+		os.close();
+
+		InputStream in = new BufferedInputStream(conn.getInputStream());
+		String resultUnformatted = IOUtils.toString(in, "UTF-8");
+		String result = resultUnformatted.substring(1, resultUnformatted.length() - 1);
+		Gson g = new Gson();
+		Usuario usuario = g.fromJson(result, Usuario.class);
+		System.out.println(usuario);
+		addJuegos(usuario.getJuegos());
+	}
+	
+	public void subirJuegoABBDD() throws IOException {
+		//(formatter.format(fi.getValue()).toString(), formatter.format(ff.getValue()).toString(), name.getText(), note.getSelectionModel().getSelectedItem(), newEstado.getSelectionModel().getSelectedItem(), newComentario.getText()));
+		String query_url = "https://game-tracker-api.herokuapp.com/users/addGames";
+		String json = "{\"name\" : \"" + ControladorLogin.usuarioActivo + "\", \"game\" : { \"Name\" : \"" + name.getText() + "\", \"GameStatus\" : \"" + newEstado.getSelectionModel().getSelectedItem() + "\", \"StartDate\" : \"" + formatter.format(fi.getValue()).toString() + "\", \"FinalDate\" : \"" + formatter.format(ff.getValue()).toString() + "\", \"Score\" : \"" + note.getSelectionModel().getSelectedItem() + "\", \"Comentario\" : \"" + newComentario.getText() + "\" } }";  
+		
+		URL url = new URL(query_url);
+		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		conn.setConnectTimeout(5000);
+		conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+		conn.setDoOutput(true);
+		conn.setDoInput(true);
+		conn.setRequestMethod("POST");
+		
+		OutputStream os = conn.getOutputStream();
+		os.write(json.getBytes("UTF-8"));
+		os.close();
+
+		InputStream in = new BufferedInputStream(conn.getInputStream());
+		String result = IOUtils.toString(in, "UTF-8");
+		System.out.println(result);
 	}
 }

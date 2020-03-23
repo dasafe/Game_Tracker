@@ -4,53 +4,76 @@ import java.time.LocalDate;
 
 public class Juego {
 
-	private LocalDate fecha_inicio;
-	private LocalDate fecha_fin;
-	private String nombre;
-	private int nota;
+	private String Name, GameStatus, Comentario, StartDate, FinalDate;
+	private int Score;
 
-	public Juego(LocalDate fecha_inicio, LocalDate fecha_fin, String nombre, int nota) {
+	public Juego(String StartDate, String FinalDate, String Name, int Score, String GameStatus,
+			String Comentario) {
 		super();
-		this.fecha_inicio = fecha_inicio;
-		this.fecha_fin = fecha_fin;
-		this.nombre = nombre;
-		this.nota = nota;
+		this.StartDate = StartDate;
+		this.FinalDate = FinalDate;
+		this.Name = Name;
+		this.Score = Score;
+		this.GameStatus = GameStatus;
+		this.Comentario = Comentario;
 	}
 
 	public Juego() {
 		super();
 	}
 
-	public LocalDate getFecha_inicio() {
-		return fecha_inicio;
+	public String getGameStatus() {
+		return GameStatus;
 	}
 
-	public void setFecha_inicio(LocalDate fecha_inicio) {
-		this.fecha_inicio = fecha_inicio;
+	public void setGameStatus(String GameStatus) {
+		this.GameStatus = GameStatus;
 	}
 
-	public LocalDate getFecha_fin() {
-		return fecha_fin;
+	public String getComentario() {
+		return Comentario;
 	}
 
-	public void setFecha_fin(LocalDate fecha_fin) {
-		this.fecha_fin = fecha_fin;
+	public void setComentario(String Comentario) {
+		this.Comentario = Comentario;
 	}
 
-	public String getNombre() {
-		return nombre;
+	public String getStartDate() {
+		return StartDate;
 	}
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
+	public void setStartDate(String StartDate) {
+		this.StartDate = StartDate;
 	}
 
-	public int getNota() {
-		return nota;
+	public String getFinalDate() {
+		return FinalDate;
 	}
 
-	public void setNota(int nota) {
-		this.nota = nota;
+	public void setFinalDate(String FinalDate) {
+		this.FinalDate = FinalDate;
+	}
+
+	public String getName() {
+		return Name;
+	}
+
+	public void setName(String Name) {
+		this.Name = Name;
+	}
+
+	public int getScore() {
+		return Score;
+	}
+
+	public void setScore(int Score) {
+		this.Score = Score;
+	}
+
+	@Override
+	public String toString() {
+		return "Juego [StartDate=" + StartDate + ", FinalDate=" + FinalDate + ", Name=" + Name + ", GameStatus="
+				+ GameStatus + ", Comentario=" + Comentario + ", Score=" + Score + "]";
 	}
 
 }

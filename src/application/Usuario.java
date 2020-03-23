@@ -4,33 +4,47 @@ import java.util.ArrayList;
 
 public class Usuario {
 
-	private String user;
-	private ArrayList<Juego> listaJuegos;
+	private String Username, Password;
+	public String getPassword() {
+		return Password;
+	}
+
+	public void setPassword(String password) {
+		Password = password;
+	}
+
+	private ArrayList<Juego> Games;
 
 	public Usuario() {
 		super();
 	}
 
-	public Usuario(String user, ArrayList<Juego> listaJuegos) {
+	public Usuario(String user, String pass, ArrayList<Juego> listaJuegos) {
 		super();
-		this.user = user;
-		this.listaJuegos = listaJuegos;
+		this.Username = user;
+		this.Password = pass;
+		this.Games = listaJuegos;
 	}
 
 	public String getUser() {
-		return user;
+		return Username;
 	}
 
 	public void setUser(String user) {
-		this.user = user;
+		this.Username = user;
 	}
 
 	public ArrayList<Juego> getJuegos() {
-		return listaJuegos;
+		return Games;
 	}
 
 	public void setJuegos(ArrayList<Juego> listaJuegos) {
-		this.listaJuegos = listaJuegos;
+		this.Games = listaJuegos;
+	}
+
+	@Override
+	public String toString() {
+		return "Usuario [user=" + Username + ", listaJuegos=" + Games + "]";
 	}
 
 }

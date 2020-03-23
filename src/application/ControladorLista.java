@@ -97,8 +97,8 @@ public class ControladorLista implements Initializable {
 	
 	public void guardarUsuario() {
 		renovarArray();
-		Main.usuarios.add(
-				new Usuario(nuevo.getText(), new ArrayList<Juego>()));
+	//	Main.usuarios.add(
+	//			new Usuario(nuevo.getText(), new ArrayList<Juego>()));
 		addUsuarios();
 	}
 

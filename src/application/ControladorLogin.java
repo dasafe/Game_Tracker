@@ -31,6 +31,8 @@ public class ControladorLogin implements Initializable {
 
 	private Stage primaryStage;
 	
+	public static String usuarioActivo;
+	
 	@FXML
 	private TextField user, password;
 
@@ -63,6 +65,7 @@ public class ControladorLogin implements Initializable {
 		JSONObject obj = new JSONObject(result);
 		String mensaje = obj.getString("mensaje");
 		if (mensaje.equals("Autenticacion correcta")) {
+			usuarioActivo = user.getText();
 			primaryStage = new Stage();
 			try {
 				FXMLLoader loader = new FXMLLoader(getClass().getResource("tabla.fxml"));
