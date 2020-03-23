@@ -40,7 +40,7 @@ public class ControladorRegistro implements Initializable {
 
 	public void registrarUsuario() throws IOException {
 		existe = false;
-		if (password1.getText().equals(password2.getText())) {
+		/*if (password1.getText().equals(password2.getText())) {
 			for (String usuario : cargarUsuarios()) {
 				JSONObject obj = new JSONObject(usuario);
 				String nombreUsuario = obj.getString("Username");
@@ -52,9 +52,9 @@ public class ControladorRegistro implements Initializable {
 					alert.setContentText("El usuario ya existe");
 					alert.showAndWait();
 				}
-			}
+			}*/
 			if (!existe) {
-				String query_url = "https://game-tracker-api.herokuapp.com/users/signup";
+				String query_url = "http://0.0.0.0:5000/users/signup";
 				String json = "{\"name\" : \"" + user.getText() + "\", \"password\": \"" + password1.getText() + "\" }";
 
 				URL url = new URL(query_url);
@@ -62,14 +62,14 @@ public class ControladorRegistro implements Initializable {
 				conn.setConnectTimeout(5000);
 				conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
 				conn.setDoOutput(true);
-				conn.setDoInput(true);
+				conn.setDoInput(false);
 				conn.setRequestMethod("POST");
 
 				OutputStream os = conn.getOutputStream();
 				os.write(json.getBytes("UTF-8"));
 				os.close();
 			}
-		}
+		//}
 	}
 
 	public ArrayList<String> cargarUsuarios() throws IOException {
@@ -79,6 +79,7 @@ public class ControladorRegistro implements Initializable {
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		conn.setConnectTimeout(5000);
 		conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+		conn.setDoOutput(true);
 		conn.setDoInput(true);
 		conn.setRequestMethod("GET");
 
