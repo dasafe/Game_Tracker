@@ -32,7 +32,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -51,7 +50,8 @@ public class ControladorTabla implements Initializable {
 	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy");
 
 	public String usuario;
-	public static String mensaje;
+	
+	public static String mensaje, oldName;
 
 	@FXML
 	private TableView<Juego> tabla;
@@ -179,23 +179,55 @@ public class ControladorTabla implements Initializable {
 	}
 
 	@FXML
-	public void editarNombre(TableColumn.CellEditEvent<Juego, String> evento) {
+	public void editarNombre(TableColumn.CellEditEvent<Juego, String> evento) throws IOException {
 		Juego aux = tabla.getSelectionModel().getSelectedItem();
+		oldName = aux.getName();
 		for (Juego juego : list) {
 			if (juego.getName().equalsIgnoreCase(aux.getName())) {
 				juego.setName(evento.getNewValue());
 			}
 		}
+		actualizarJuegoenBBDD();
+		showAlert(mensaje);
 	}
 
 	@FXML
-	public void editarNota(TableColumn.CellEditEvent<Juego, Integer> evento) {
+	public void editarNota(TableColumn.CellEditEvent<Juego, Integer> evento) throws IOException {
 		Juego aux = tabla.getSelectionModel().getSelectedItem();
+		oldName = aux.getName();
 		for (Juego juego : list) {
 			if (juego.getName().equalsIgnoreCase(aux.getName())) {
 				juego.setScore(evento.getNewValue());
 			}
 		}
+		actualizarJuegoenBBDD();
+		showAlert(mensaje);
+	}
+	
+	@FXML
+	public void editarEstado(TableColumn.CellEditEvent<Juego, String> evento) throws IOException {
+		Juego aux = tabla.getSelectionModel().getSelectedItem();
+		oldName = aux.getName();
+		for (Juego juego : list) {
+			if (juego.getName().equalsIgnoreCase(aux.getName())) {
+				juego.setGameStatus(evento.getNewValue());
+			}
+		}
+		actualizarJuegoenBBDD();
+		showAlert(mensaje);
+	}
+	
+	@FXML
+	public void editarComentario(TableColumn.CellEditEvent<Juego, String> evento) throws IOException {
+		Juego aux = tabla.getSelectionModel().getSelectedItem();
+		oldName = aux.getName();
+		for (Juego juego : list) {
+			if (juego.getName().equalsIgnoreCase(aux.getName())) {
+				juego.setComentario(evento.getNewValue());
+			}
+		}
+		actualizarJuegoenBBDD();
+		showAlert(mensaje);
 	}
 
 	public void mostrarDocumento() throws IOException {
@@ -272,7 +304,28 @@ public class ControladorTabla implements Initializable {
 		String result = IOUtils.toString(in, "UTF-8");
 		JSONObject obj = new JSONObject(result);
 		mensaje = obj.getString("mensaje");
+	}
+	
+	public void actualizarJuegoenBBDD() throws IOException {
+		String query_url = "https://game-tracker-api.herokuapp.com/users/updateGames";
+		String json = "{\"name\" : \"" + ControladorLogin.usuarioActivo + "\", \"oldName\" : \"" + oldName + "\", \"game\" : { \"Name\" : \"" + tabla.getSelectionModel().getSelectedItems().get(0).getName() + "\", \"GameStatus\" : \"" + tabla.getSelectionModel().getSelectedItems().get(0).getGameStatus() + "\", \"StartDate\" : \"" + tabla.getSelectionModel().getSelectedItems().get(0).getStartDate() + "\", \"FinalDate\" : \"" + tabla.getSelectionModel().getSelectedItems().get(0).getFinalDate() + "\", \"Score\" : \"" + tabla.getSelectionModel().getSelectedItems().get(0).getScore() + "\", \"Comentario\" : \"" + tabla.getSelectionModel().getSelectedItems().get(0).getComentario() + "\" } }";  
 		
+		URL url = new URL(query_url);
+		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		conn.setConnectTimeout(5000);
+		conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+		conn.setDoOutput(true);
+		conn.setDoInput(true);
+		conn.setRequestMethod("PUT");
+		
+		OutputStream os = conn.getOutputStream();
+		os.write(json.getBytes("UTF-8"));
+		os.close();
+
+		InputStream in = new BufferedInputStream(conn.getInputStream());
+		String result = IOUtils.toString(in, "UTF-8");
+		JSONObject obj = new JSONObject(result);
+		mensaje = obj.getString("mensaje");
 	}
 	
 	public void showAlert(String mensaje) {

@@ -23,8 +23,8 @@
           <TableColumn fx:id="fechaFin" prefWidth="97.0" text="FECHA_FIN" />
             <TableColumn fx:id="nombre" minWidth="0.0" onEditCommit="#editarNombre" prefWidth="82.0" text="NOMBRE" />
             <TableColumn fx:id="nota" minWidth="0.0" onEditCommit="#editarNota" prefWidth="109.0" text="NOTA" />
-            <TableColumn fx:id="estado" prefWidth="128.0" text="ESTADO" />
-            <TableColumn fx:id="comentario" prefWidth="128.0" text="COMENTARIO" />
+            <TableColumn fx:id="estado" onEditCommit="#editarEstado" prefWidth="128.0" text="ESTADO" />
+            <TableColumn fx:id="comentario" onEditCommit="#editarComentario" prefWidth="128.0" text="COMENTARIO" />
         </columns>
          <contextMenu>
             <ContextMenu>
