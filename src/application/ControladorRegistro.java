@@ -95,24 +95,6 @@ public class ControladorRegistro implements Initializable {
 		}
 	}
 
-	public ArrayList<String> cargarUsuarios() throws IOException {
-		String query_url = "https://game-tracker-api.herokuapp.com/users/list";
-
-		URL url = new URL(query_url);
-		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-		conn.setConnectTimeout(5000);
-		conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-		conn.setDoOutput(true);
-		conn.setDoInput(true);
-		conn.setRequestMethod("GET");
-
-		InputStream in = new BufferedInputStream(conn.getInputStream());
-		String resultUnformatted = IOUtils.toString(in, "UTF-8");
-		String result = resultUnformatted.substring(1, resultUnformatted.length() - 1);
-		ArrayList<String> userList = new ArrayList<>(Arrays.asList(result.split(",")));
-		return userList;
-	}
-
 	public void showAlert(String mensaje) {
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setHeaderText(null);

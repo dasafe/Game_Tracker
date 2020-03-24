@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.ResourceBundle;
 
 import org.apache.commons.io.IOUtils;
+import org.json.JSONObject;
 
 import com.google.gson.Gson;
 
@@ -27,6 +28,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.SelectionMode;
@@ -34,6 +36,7 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.ChoiceBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -48,6 +51,7 @@ public class ControladorTabla implements Initializable {
 	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy");
 
 	public String usuario;
+	public static String mensaje;
 
 	@FXML
 	private TableView<Juego> tabla;
@@ -117,7 +121,11 @@ public class ControladorTabla implements Initializable {
 		}
 	}
 
-	public void borrarJuego() {
+	public void borrarJuego() throws IOException {
+		for (int i = 0; i < tabla.getSelectionModel().getSelectedItems().size(); i++) {
+			borrarJuegoenBBDD(tabla.getSelectionModel().getSelectedItems().get(i).getName());
+		} 
+		showAlert(mensaje);
 		tabla.getItems().removeAll(tabla.getSelectionModel().getSelectedItems());
 		renovarArray();
 	}
@@ -224,7 +232,6 @@ public class ControladorTabla implements Initializable {
 	}
 	
 	public void subirJuegoABBDD() throws IOException {
-		//(formatter.format(fi.getValue()).toString(), formatter.format(ff.getValue()).toString(), name.getText(), note.getSelectionModel().getSelectedItem(), newEstado.getSelectionModel().getSelectedItem(), newComentario.getText()));
 		String query_url = "https://game-tracker-api.herokuapp.com/users/addGames";
 		String json = "{\"name\" : \"" + ControladorLogin.usuarioActivo + "\", \"game\" : { \"Name\" : \"" + name.getText() + "\", \"GameStatus\" : \"" + newEstado.getSelectionModel().getSelectedItem() + "\", \"StartDate\" : \"" + formatter.format(fi.getValue()).toString() + "\", \"FinalDate\" : \"" + formatter.format(ff.getValue()).toString() + "\", \"Score\" : \"" + note.getSelectionModel().getSelectedItem() + "\", \"Comentario\" : \"" + newComentario.getText() + "\" } }";  
 		
@@ -243,5 +250,35 @@ public class ControladorTabla implements Initializable {
 		InputStream in = new BufferedInputStream(conn.getInputStream());
 		String result = IOUtils.toString(in, "UTF-8");
 		System.out.println(result);
+	}
+	
+	public void borrarJuegoenBBDD(String gamename) throws IOException {
+		String query_url = "https://game-tracker-api.herokuapp.com/users/deleteGames";
+		String json = "{\"name\" : \"" + ControladorLogin.usuarioActivo + "\", \"gamename\" : \"" + gamename + "\"}";  
+		
+		URL url = new URL(query_url);
+		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		conn.setConnectTimeout(5000);
+		conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+		conn.setDoOutput(true);
+		conn.setDoInput(true);
+		conn.setRequestMethod("DELETE");
+		
+		OutputStream os = conn.getOutputStream();
+		os.write(json.getBytes("UTF-8"));
+		os.close();
+
+		InputStream in = new BufferedInputStream(conn.getInputStream());
+		String result = IOUtils.toString(in, "UTF-8");
+		JSONObject obj = new JSONObject(result);
+		mensaje = obj.getString("mensaje");
+		
+	}
+	
+	public void showAlert(String mensaje) {
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setHeaderText(null);
+		alert.setContentText(mensaje);
+		alert.showAndWait();
 	}
 }
