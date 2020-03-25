@@ -17,10 +17,9 @@ public class WatchDir {
 	private final Map<WatchKey, Path> keys;
 	private final boolean recursive;
 	private boolean trace = false;
-	private static String ruta =
-//			"C:\\Users\\Public\\Documents\\Steam\\CODEX";
-			"C:\\Users\\David\\Desktop\\SSELauncher\\SmartSteamEmu\\SmartSteamEmu";
-//	 System.getProperty("user.dir") + "\\juegos";
+	
+	//Cambiar ruta a %PUBLIC%\Documents\Steam\CODEX para uso personal
+	private static String ruta = System.getProperty("user.dir") + "\\juegos";
 
 	@SuppressWarnings("unchecked")
 	static <T> WatchEvent<T> cast(WatchEvent<?> event) {
