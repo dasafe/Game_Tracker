@@ -125,7 +125,7 @@ public class ControladorTabla implements Initializable {
 		for (int i = 0; i < tabla.getSelectionModel().getSelectedItems().size(); i++) {
 			borrarJuegoenBBDD(tabla.getSelectionModel().getSelectedItems().get(i).getName());
 		} 
-		showAlert(mensaje);
+		//showAlert(mensaje);
 		tabla.getItems().removeAll(tabla.getSelectionModel().getSelectedItems());
 		renovarArray();
 	}
@@ -188,7 +188,7 @@ public class ControladorTabla implements Initializable {
 			}
 		}
 		actualizarJuegoenBBDD();
-		showAlert(mensaje);
+		//showAlert(mensaje);
 	}
 
 	@FXML
@@ -201,7 +201,7 @@ public class ControladorTabla implements Initializable {
 			}
 		}
 		actualizarJuegoenBBDD();
-		showAlert(mensaje);
+		//showAlert(mensaje);
 	}
 	
 	@FXML
@@ -214,7 +214,7 @@ public class ControladorTabla implements Initializable {
 			}
 		}
 		actualizarJuegoenBBDD();
-		showAlert(mensaje);
+		//showAlert(mensaje);
 	}
 	
 	@FXML
@@ -227,7 +227,7 @@ public class ControladorTabla implements Initializable {
 			}
 		}
 		actualizarJuegoenBBDD();
-		showAlert(mensaje);
+		//showAlert(mensaje);
 	}
 
 	public void mostrarDocumento() throws IOException {

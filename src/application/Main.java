@@ -15,7 +15,7 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws IOException {
-		//cargarDatosPrueba();
+		// cargarDatosPrueba();
 		try {
 			Parent root = FXMLLoader.load(getClass().getResource("login.fxml"));
 			Scene scene = new Scene(root);
@@ -28,12 +28,28 @@ public class Main extends Application {
 	}
 
 	public static void main(String[] args) {
+
+		Thread thread = new Thread(new Runnable() {
+			public void run() {
+				try {
+					toast.WatchDir.main(args);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+
+		thread.setDaemon(true);
+
+		thread.start();
+
 		launch(args);
 	}
 
 	public void cargarDatosPrueba() throws IOException {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy");
-		
+
 		/*
 		 * ArrayList<Juego> listaJuegos = new ArrayList<Juego>(); listaJuegos.add(new
 		 * Juego(LocalDate.parse("07/02/21", formatter), LocalDate.parse("07/02/21",
