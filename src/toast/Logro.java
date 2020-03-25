@@ -17,11 +17,19 @@ public class Logro {
 
 		String linea;
 		String logroId = "";
+		String logroAux = "";
+		float tiempo = 0;
 
 		while (sc.hasNextLine()) {
 			linea = sc.nextLine();
-			if (linea.startsWith("[") && linea.endsWith("]")) {
-				logroId = linea.substring(linea.indexOf("[") + 1, linea.indexOf("]"));
+			if (linea.startsWith("[") && linea.endsWith("]") && !linea.equalsIgnoreCase("[SteamAchievements]")) {
+				logroAux = linea.substring(linea.indexOf("[") + 1, linea.indexOf("]"));
+			}
+			if (linea.contains("UnlockTime")) {
+				if (Float.parseFloat(linea.replace(" ", "").replace("UnlockTime=", "")) - tiempo >= 0) {
+					tiempo = Float.parseFloat(linea.replace(" ", "").replace("UnlockTime=", ""));
+					logroId = logroAux;
+				}
 			}
 		}
 		String[] r = ruta.replace("\\", "__").split("__");

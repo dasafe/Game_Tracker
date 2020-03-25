@@ -17,7 +17,10 @@ public class WatchDir {
 	private final Map<WatchKey, Path> keys;
 	private final boolean recursive;
 	private boolean trace = false;
-	private static String ruta = System.getProperty("user.dir") + "\\juegos";
+	private static String ruta =
+//			"C:\\Users\\Public\\Documents\\Steam\\CODEX";
+			"C:\\Users\\David\\Desktop\\SSELauncher\\SmartSteamEmu\\SmartSteamEmu";
+//	 System.getProperty("user.dir") + "\\juegos";
 
 	@SuppressWarnings("unchecked")
 	static <T> WatchEvent<T> cast(WatchEvent<?> event) {
@@ -114,7 +117,10 @@ public class WatchDir {
 				// print out event
 				System.out.format("%s: %s\n", event.kind().name(), child);
 				try {
-					Logro.ultimoLogro(child.toString());
+					if (child.toString().substring(child.toString().lastIndexOf("\\") + 1)
+							.equalsIgnoreCase("achievements.ini")) {
+						Logro.ultimoLogro(child.toString());
+					}
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
