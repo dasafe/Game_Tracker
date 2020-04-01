@@ -15,8 +15,8 @@ public class NodeJS {
 
 	static String ruta = System.getProperty("user.dir");
 
-	public static void toast(String titulo, String descripcion, String icono, String juego) {
-		ProcessBuilder pb = new ProcessBuilder("node", ruta + "\\app.js", titulo, descripcion, icono, juego);
+	public static void toast(String titulo, String descripcion, String icono, String juego, String img) {
+		ProcessBuilder pb = new ProcessBuilder("node", ruta + "\\app.js", titulo, descripcion, icono, juego, img);
 		try {
 			Process p = pb.start();
 		} catch (IOException e) {

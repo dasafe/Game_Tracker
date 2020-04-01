@@ -20,6 +20,7 @@ public class WatchDir {
 	
 	//Cambiar ruta a %PUBLIC%\Documents\Steam\CODEX para uso personal
 	private static String ruta = System.getProperty("user.dir") + "\\juegos";
+//			"C:\\Users\\Public\\Documents\\Steam\\CODEX";
 
 	@SuppressWarnings("unchecked")
 	static <T> WatchEvent<T> cast(WatchEvent<?> event) {

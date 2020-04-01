@@ -22,7 +22,9 @@ public class SteamAPI {
 
 		URL url = new URL("https://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v0002/?key=" + key + "&appid="
 				+ appId + "&l=spanish&format=xml");
-		
+
+		String img = "https://steamcdn-a.akamaihd.net/steam/apps/" + appId + "/header.jpg";
+
 		String apiLogro;
 		String titulo;
 		String descripcion;
@@ -34,12 +36,11 @@ public class SteamAPI {
 		Document doc = db.parse(url.openStream());
 
 		NodeList nList = doc.getElementsByTagName("achievement");
-		
+
 		NodeList gameList = doc.getElementsByTagName("game");
 		Node gameNode = gameList.item(0);
 		Element gameElement = (Element) gameNode;
 		juego = gameElement.getElementsByTagName("gameName").item(0).getTextContent();
-		
 
 		for (int temp = 0; temp < nList.getLength(); temp++) {
 
@@ -60,7 +61,7 @@ public class SteamAPI {
 					}
 					icono = eElement.getElementsByTagName("icon").item(0).getTextContent();
 
-					NodeJS.toast(titulo, descripcion, icono, juego);
+					NodeJS.toast(titulo, descripcion, icono, juego, img);
 				}
 
 			}
