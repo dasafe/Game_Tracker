@@ -25,6 +25,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
 public class ControladorLogin implements Initializable {
@@ -34,8 +35,11 @@ public class ControladorLogin implements Initializable {
 	public static String usuarioActivo;
 	
 	@FXML
-	private TextField user, password;
+	private TextField user;
 
+	@FXML
+	private PasswordField password;
+	
 	@FXML
 	private Button login, register;
 
