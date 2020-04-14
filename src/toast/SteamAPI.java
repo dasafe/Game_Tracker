@@ -62,6 +62,7 @@ public class SteamAPI {
 					icono = eElement.getElementsByTagName("icon").item(0).getTextContent();
 
 					NodeJS.toast(titulo, descripcion, icono, juego, img);
+					break;
 				}
 
 			}

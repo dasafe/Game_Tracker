@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import org.apache.commons.io.IOUtils;
@@ -23,12 +24,15 @@ import com.google.gson.Gson;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.SelectionMode;
@@ -39,9 +43,13 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.ChoiceBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class ControladorTabla implements Initializable {
+	
+	private Stage primaryStage;
 
 	private ObservableList<Juego> list = FXCollections.observableArrayList();
 
@@ -231,10 +239,19 @@ public class ControladorTabla implements Initializable {
 	}
 
 	public void mostrarDocumento() throws IOException {
-		Desktop desktop = Desktop.getDesktop();
-		File file = new File("bin\\application\\Informe.pdf");
-		if (file.exists()) {
-			desktop.open(file);
+		primaryStage = new Stage();
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("logros.fxml"));
+			Parent root = (Parent) loader.load();
+			Scene scene = new Scene(root);
+			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+			primaryStage.setScene(scene);
+			Stage stage = (Stage) tabla.getScene().getWindow();
+			primaryStage.setOnCloseRequest(confirmCloseEventHandler);
+			stage.close();
+			primaryStage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 	
@@ -334,4 +351,18 @@ public class ControladorTabla implements Initializable {
 		alert.setContentText(mensaje);
 		alert.showAndWait();
 	}
+	
+	private EventHandler<WindowEvent> confirmCloseEventHandler = event -> {
+		Alert closeConfirmation = new Alert(Alert.AlertType.CONFIRMATION, "Estas seguro de que quieres salir?");
+		Button exitButton = (Button) closeConfirmation.getDialogPane().lookupButton(ButtonType.OK);
+		exitButton.setText("Salir");
+		closeConfirmation.setHeaderText("Confirmar");
+		closeConfirmation.initModality(Modality.APPLICATION_MODAL);
+		closeConfirmation.initOwner(primaryStage);
+
+		Optional<ButtonType> closeResponse = closeConfirmation.showAndWait();
+		if (!ButtonType.OK.equals(closeResponse.get())) {
+			event.consume();
+		}
+	};
 }
